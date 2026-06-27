@@ -236,7 +236,6 @@ function markNotificationAsRead(notificationId) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
->>>>>>> abd208d (Update frontend shipment views and sidebar)
 
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
               <option value="All">All</option>
