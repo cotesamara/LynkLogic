@@ -60,11 +60,17 @@ const cellStyle = {
 };
 
 export default function LoadTable() {
-  const [loads] = useState(DUMMY_LOADS);
+  const [loads, setLoads] = useState(DUMMY_LOADS);
   const [filterStatus, setFilterStatus] = useState("All");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useState(false);
+  
+  //for notifications
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  
+  const unreadCount = notifications.filter((notification) => !notification.isRead).length;
 
   const filteredLoads = loads.filter((load) => {
     const matchesStatus = filterStatus === "All" || load.status === filterStatus;
@@ -80,6 +86,42 @@ export default function LoadTable() {
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
   }
+//
+//for notifications 
+  function handleStatusChange(loadId, newStatus) {
+  const loadToUpdate = loads.find((load) => load.id === loadId);
+
+  if (!loadToUpdate || loadToUpdate.status === newStatus) return;
+
+  setLoads((currentLoads) =>
+    currentLoads.map((load) =>
+      load.id === loadId ? { ...load, status: newStatus } : load
+    )
+  );
+
+  const newNotification = {
+    id: Date.now(),
+    title: "Load Status Updated",
+    message: `${loadToUpdate.id} for ${loadToUpdate.driverName} changed from ${loadToUpdate.status} to ${newStatus}.`,
+    isRead: false,
+    createdAt: new Date().toLocaleString(),
+  };
+
+  setNotifications((currentNotifications) => [
+    newNotification,
+    ...currentNotifications,
+  ]);
+}
+
+function markNotificationAsRead(notificationId) {
+  setNotifications((currentNotifications) =>
+    currentNotifications.map((notification) =>
+      notification.id === notificationId
+        ? { ...notification, isRead: true }
+        : notification
+    )
+  );
+}
 
   const sortedLoads = [...filteredLoads].sort((a, b) => {
     if (!sortConfig.key) return 0;
@@ -103,14 +145,59 @@ export default function LoadTable() {
       {/* header */}
       <div style={{ background: COLORS.navy, color: "white", padding: "16px", display: "flex", justifyContent: "space-between" }}>
         <h2>Load Assignments</h2>
-        <button
-          onClick={() => setShowModal(true)}
-          style={{ background: COLORS.red, color: "white", padding: "10px 16px", border: "none", cursor: "pointer" }}
-        >
-          + Assign New Load
-        </button>
-      </div>
+        
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            style={{
+              background: COLORS.white,
+              color: COLORS.navy,
+              padding: "10px 16px",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Notifications ({unreadCount})
+          </button>
 
+          <button
+            onClick={() => setShowModal(true)}
+            style={{ background: COLORS.red, color: "white", padding: "10px 16px", border: "none", cursor: "pointer" }}
+          >
+            + Assign New Load
+          </button>
+        </div>
+      </div>
+//for notifications
+      {showNotifications && (
+        <div style={{ background: "white", padding: "16px", marginTop: "10px", border: "1px solid #ddd" }}>
+    <h3>Notifications</h3>
+
+    {notifications.length === 0 ? (
+      <p>No notifications yet.</p>
+    ) : (
+      notifications.map((notification) => (
+        <div
+          key={notification.id}
+          onClick={() => markNotificationAsRead(notification.id)}
+          style={{
+            padding: "10px",
+            marginBottom: "8px",
+            background: notification.isRead ? "#f5f5f5" : "#e8f4ff",
+            borderLeft: notification.isRead ? "4px solid #ccc" : `4px solid ${COLORS.navy}`,
+            cursor: "pointer",
+          }}
+        >
+          <strong>{notification.title}</strong>
+          <p>{notification.message}</p>
+          <small>Sent: {notification.createdAt}</small>
+          {!notification.isRead && <p style={{ fontWeight: "bold" }}>Unread</p>}
+        </div>
+      ))
+    )}
+  </div>
+)}
       {/* filters */}
       <div style={{ background: "white", padding: "12px", display: "flex", gap: "10px" }}>
         <input
@@ -158,9 +245,20 @@ export default function LoadTable() {
               <td style={cellStyle}>{load.deliveryLocation}</td>
               <td style={cellStyle}>{load.dateAssigned}</td>
               <td style={cellStyle}>
-                <span style={{ ...getStatusStyle(load.status), padding: "4px 10px", borderRadius: "10px" }}>
-                  {load.status}
-                </span>
+                <select
+                value={load.status}
+                onChange={(e) => handleStatusChange(load.id, e.target.value)}
+                style={{
+                  ...getStatusStyle(load.status),
+                  padding: "4px 10px",
+                  borderRadius: "10px",
+                  border: "none",
+                }}
+              >
+                <option value="Pending">Pending</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Delivered">Delivered</option>
+</select>
               </td>
             </tr>
           ))}
