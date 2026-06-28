@@ -214,7 +214,7 @@ function getStatusStyle(status) {
   return { backgroundColor: "#757575", color: "#fff" };
 }
 
-export default function LoadShipments() {
+export default function LoadShipments({ onRoleNavigate }) {
   const [shipments] = useState(DUMMY_SHIPMENTS);
   const [filterStatus, setFilterStatus] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
