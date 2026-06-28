@@ -169,8 +169,8 @@ function markNotificationAsRead(notificationId) {
   }
 
   return (
-    <div style={{ fontFamily: "Arial", background: "#f5f5f5", minHeight: "100vh", padding: "24px" }}>
-      {selectedLoad ? (
+      <div style={{ background: "#f5f5f5", minHeight: "100vh", padding: "24px" }}>
+        {selectedLoad ? (
         <ShipmentDetails load={selectedLoad} onBack={handleBackToList} />
       ) : (
         <>
