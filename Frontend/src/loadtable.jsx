@@ -47,9 +47,9 @@ const DUMMY_LOADS = [
 ];
 
 function getStatusStyle(status) {
-  if (status === "In Transit") return { backgroundColor: "#0B3C5D", color: "#fff" };
-  if (status === "Delivered") return { backgroundColor: "#2e7d32", color: "#fff" };
-  if (status === "Pending") return { backgroundColor: "#e65100", color: "#fff" };
+  if (status === "In Transit") return { backgroundColor: "#5B8DB8", color: "#fff" };
+  if (status === "Delivered") return { backgroundColor: "#059669", color: "#fff" };
+  if (status === "Pending") return { backgroundColor: "#D97706", color: "#fff" };
   return { backgroundColor: "#757575", color: "#fff" };
 }
 
