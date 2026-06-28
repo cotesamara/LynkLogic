@@ -13,43 +13,43 @@ const COLORS = {
 // dummy data
 const DUMMY_LOADS = [
   {
-    id: "LD1001",
+    id: "LD1",
     driverName: "John Smith",
     pickupLocation: "1234 Main St, Toronto, ON",
     deliveryLocation: "784 Alex Blvd, Burlington, ON",
-    dateAssigned: "2026-06-07",
+    dateAssigned: "2026-07-31",
     status: "In Transit",
   },
   {
-    id: "LD1003",
-    driverName: "Mike Williams",
+    id: "LD2",
+    driverName: "Sarah Johnson",
     pickupLocation: "765 Apple St, Hamilton, ON",
     deliveryLocation: "987 Hello Ave, Oakville, ON",
-    dateAssigned: "2026-06-06",
+    dateAssigned: "2026-06-30",
     status: "Delivered",
   },
   {
-    id: "LD1002",
-    driverName: "Sarah Johnson",
+    id: "LD3",
+    driverName: "Mike Williams",
     pickupLocation: "555 Oliver St, Windsor, ON",
     deliveryLocation: "1111 Atlas St, Oakville, ON",
-    dateAssigned: "2026-06-10",
+    dateAssigned: "2026-07-16",
     status: "Pending",
   },
   {
-    id: "LD1004",
+    id: "LD4",
     driverName: "Robert Brown",
     pickupLocation: "137 King St, Waterloo, ON",
     deliveryLocation: "528 Point St, Toronto, ON",
-    dateAssigned: "2026-06-05",
+    dateAssigned: "2026-07-04",
     status: "In Transit",
   },
 ];
 
 function getStatusStyle(status) {
-  if (status === "In Transit") return { backgroundColor: "#0B3C5D", color: "#fff" };
-  if (status === "Delivered") return { backgroundColor: "#2e7d32", color: "#fff" };
-  if (status === "Pending") return { backgroundColor: "#e65100", color: "#fff" };
+  if (status === "In Transit") return { backgroundColor: "#5B8DB8", color: "#fff" };
+  if (status === "Delivered") return { backgroundColor: "#059669", color: "#fff" };
+  if (status === "Pending") return { backgroundColor: "#D97706", color: "#fff" };
   return { backgroundColor: "#757575", color: "#fff" };
 }
 
@@ -169,8 +169,8 @@ function markNotificationAsRead(notificationId) {
   }
 
   return (
-    <div style={{ fontFamily: "Arial", background: "#f5f5f5", minHeight: "100vh", padding: "24px" }}>
-      {selectedLoad ? (
+      <div style={{ background: "#f5f5f5", minHeight: "100vh", padding: "24px" }}>
+        {selectedLoad ? (
         <ShipmentDetails load={selectedLoad} onBack={handleBackToList} />
       ) : (
         <>
@@ -230,8 +230,8 @@ function markNotificationAsRead(notificationId) {
             </div>
           )}
 
-          <div style={{ background: "white", padding: "12px", display: "flex", gap: "10px" }}>
-            <input
+          <div style={{ background: "white", padding: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
+              <input
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -244,7 +244,13 @@ function markNotificationAsRead(notificationId) {
               <option value="Pending">Pending</option>
             </select>
 
-            <span>{sortedLoads.length} loads</span>
+            <span style={{ 
+              color: COLORS.red, 
+              fontWeight: "600", 
+              fontSize: "14px" 
+            }}>
+              {sortedLoads.length} Loads Found
+            </span>
           </div>
 
           <table style={{ width: "100%", background: "white" }}>
@@ -258,7 +264,7 @@ function markNotificationAsRead(notificationId) {
                   { label: "Date", key: "dateAssigned" },
                   { label: "Status", key: "status" },
                 ].map((col) => (
-                  <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: "pointer" }}>
+                <th key={col.key} onClick={() => handleSort(col.key)} style={{ cursor: "pointer", whiteSpace: "nowrap" }}>
                     {col.label}
                     <SortArrow colKey={col.key} />
                   </th>
@@ -305,7 +311,7 @@ function markNotificationAsRead(notificationId) {
               ✕
             </button>
 
-            <AssignLoad />
+            <AssignLoad onClose={() => setShowModal(false)} />
           </div>
         </div>
       )}

@@ -263,8 +263,7 @@ export default function LoadShipments({ onRoleNavigate }) {
   const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
-    <div style={{ fontFamily: "Arial", background: "#edf2f7", minHeight: "100vh", padding: "24px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", flexWrap: "wrap", marginBottom: "24px" }}>
+      <div style={{ background: "#edf2f7", minHeight: "100vh", padding: "24px" }}>      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", flexWrap: "wrap", marginBottom: "24px" }}>
         <div style={{ minWidth: "240px" }}>
           <h2 style={{ margin: 0, color: COLORS.navy, fontSize: "32px" }}>Shipments</h2>
           <p style={{ margin: "10px 0 0", color: "#52606d" }}>Weekly pickup schedule with route filters and status controls.</p>
