@@ -230,8 +230,8 @@ function markNotificationAsRead(notificationId) {
             </div>
           )}
 
-          <div style={{ background: "white", padding: "12px", display: "flex", gap: "10px" }}>
-            <input
+          <div style={{ background: "white", padding: "12px", display: "flex", gap: "10px", alignItems: "center" }}>
+              <input
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -244,7 +244,13 @@ function markNotificationAsRead(notificationId) {
               <option value="Pending">Pending</option>
             </select>
 
-            <span>{sortedLoads.length} loads</span>
+            <span style={{ 
+              color: COLORS.red, 
+              fontWeight: "600", 
+              fontSize: "14px" 
+            }}>
+              {sortedLoads.length} Loads Found
+            </span>
           </div>
 
           <table style={{ width: "100%", background: "white" }}>
