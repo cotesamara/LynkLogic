@@ -25,7 +25,7 @@ export default function DriverSidebar({ currentPage, onNavigate }) {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        background: "#374151",
+        background: "#0B3C5D",
         color: "#fff",
       }}
     >
